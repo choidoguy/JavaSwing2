@@ -2,6 +2,7 @@ package main;
 import javax.swing.JFrame;
 
 import step.JPanel01;
+import step.JPanel02;
 
 @SuppressWarnings("serial")
 public class Scheduler extends JFrame {
@@ -21,18 +22,25 @@ public class Scheduler extends JFrame {
     }
  
     public void change(String panelName) { // 패널 1번과 2번 변경 후 재설정
- 
-        if (panelName.equals("panel01")) {
-            getContentPane().removeAll();
-            getContentPane().add(jpanel01);
-            revalidate();
-            repaint();
-        } else {
-            getContentPane().removeAll();
-            getContentPane().add(jpanel02);
-            revalidate();
-            repaint();
-        }
+    	
+    	getContentPane().removeAll();
+    	
+    	switch(panelName) {
+    	case "panel01":
+    		getContentPane().add(jpanel01);
+    	break;
+    	case "panel02":
+    		getContentPane().add(jpanel02);
+    	break;
+    	default : break;
+    	}
+    	
+        revalidate();
+        repaint();
+    }
+    
+    public static void main(String[] args) {
+    	new Scheduler();
     }
  
 }

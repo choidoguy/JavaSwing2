@@ -1,5 +1,8 @@
 package step;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -31,15 +34,14 @@ public class JPanel01 extends JPanel { // 1번째 패널
         jScrollPane1.setLocation(10, 40);
         add(jScrollPane1);
  
-        //jButton1.addActionListener(new MyActionListener());
+        jButton1.addActionListener(new MyActionListener());
     }
-
-	
  
-//    class MyActionListener implements ActionListener { // 버튼 키 눌리면 패널 2번 호출
-//        @Override
-//        public void actionPerformed(ActionEvent e) {
-//            win.change("panel02");
-//        }
-//    }
+    class MyActionListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+    }
 }

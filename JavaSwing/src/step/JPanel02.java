@@ -1,4 +1,5 @@
-package main;
+package step;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -7,11 +8,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
- 
 
- 
+import main.Scheduler;
+
 @SuppressWarnings("serial")
-class JPanel02 extends JPanel { // 2번째 패널
+public class JPanel02 extends JPanel { // 2번째 패널
     private JTextField textField;
     private JPasswordField passwordField;
     private Scheduler win;
@@ -48,12 +49,5 @@ class JPanel02 extends JPanel { // 2번째 패널
         public void actionPerformed(ActionEvent e) {
             win.change("panel01");
         }
-    }
-}
- 
- 
-public class JavaSwing {
-    public static void main(String[] args) {
-    	new Scheduler();
     }
 }
