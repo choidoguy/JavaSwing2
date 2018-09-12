@@ -34,14 +34,11 @@ public class JPanel01 extends JPanel { // 1번째 패널
         jScrollPane1.setLocation(10, 40);
         add(jScrollPane1);
  
-        jButton1.addActionListener(new MyActionListener());
-    }
- 
-    class MyActionListener implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-    }
+        jButton1.addActionListener(new ActionListener() {
+        	@Override
+    		public void actionPerformed(ActionEvent e) {
+        		 win.change("panel02");
+    		}
+        });
+    } // end public JPanel01(Scheduler scheduler)
 }

@@ -41,13 +41,11 @@ public class JPanel02 extends JPanel { // 2번째 패널
         btn.setSize(70, 20);
         btn.setLocation(10, 10);
         add(btn);
-        btn.addActionListener(new MyActionListener());
-    }
- 
-    class MyActionListener implements ActionListener { // 버튼 키 눌리면 패널 1번 호출
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            win.change("panel01");
-        }
-    }
+        btn.addActionListener(new ActionListener() {
+        	@Override
+            public void actionPerformed(ActionEvent e) {
+                win.change("panel01");
+            }
+        });
+    } // end public JPanel02(Scheduler win)
 }
