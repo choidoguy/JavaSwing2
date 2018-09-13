@@ -2,16 +2,16 @@ package step;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.util.Vector;
 
-import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 import come.NorPanel;
 import come.SouPanel;
 import file.FileDrop;
+import file.FileTable;
 import main.Scheduler;
 
 @SuppressWarnings("serial")
@@ -36,31 +36,64 @@ public class STEP01 extends JPanel {
     	add(souPanel);  
     	borderLayout.addLayoutComponent(souPanel, BorderLayout.SOUTH);
 
+//    	JPanel cenPanel = new JPanel();
+//    	cenPanel.setBorder(new TitledBorder(new LineBorder(Color.black),""));
+//		JList list = new JList();
+//		cenPanel.add(list);
+//		new FileDrop(System.out, list, /* dragBorder, */ new FileDrop.Listener() {
+//			public void filesDropped(java.io.File[] files) {
+//				Vector vec = new Vector();
+//				for (int i = 0; i < files.length; i++) {
+//					try {
+//						vec.addElement(files[i].getCanonicalPath() + "\n");
+//					} // end try
+//					catch (java.io.IOException e) {
+//					}
+//				} // end for: through each dropped file
+//				list.setListData(vec);
+//			} // end filesDropped
+//		}); // end FileDrop.Listener
+//		
+//		BorderLayout layout = new BorderLayout();
+//		layout.addLayoutComponent(list, BorderLayout.CENTER);
+//		cenPanel.setLayout(layout);
+    	
+    	
+    	
     	JPanel cenPanel = new JPanel();
     	cenPanel.setBorder(new TitledBorder(new LineBorder(Color.black),""));
-    	
-    	
-		JList list = new JList();
-		cenPanel.add(list);
-		
-		new FileDrop(System.out, list, /* dragBorder, */ new FileDrop.Listener() {
+    	FileTable fileTable = new FileTable();
+    	JTable table = fileTable.getTable();
+		cenPanel.add(table);
+		new FileDrop(System.out, table, /* dragBorder, */ new FileDrop.Listener() {
 			public void filesDropped(java.io.File[] files) {
-				Vector vec = new Vector();
+				
+				Object[][] obj = new Object[files.length][2];
+				
 				for (int i = 0; i < files.length; i++) {
 					try {
-						vec.addElement(files[i].getCanonicalPath() + "\n");
+						obj[i][0] = files[i].getCanonicalPath();
+						obj[i][1] = "Del";
 					} // end try
 					catch (java.io.IOException e) {
 					}
 				} // end for: through each dropped file
-				list.setListData(vec);
+				
+				FileTable fileTable = new FileTable(obj);
+				JTable table = fileTable.getTable();
+				cenPanel.removeAll();
+				cenPanel.add(table);
+				
+				cenPanel.revalidate();
+				cenPanel.repaint();
+				
 			} // end filesDropped
 		}); // end FileDrop.Listener
 		
 		BorderLayout layout = new BorderLayout();
-		layout.addLayoutComponent(list, BorderLayout.CENTER);
-		
+		layout.addLayoutComponent(table, BorderLayout.CENTER);
 		cenPanel.setLayout(layout);
+		
 		
     	
     	add(cenPanel); 
