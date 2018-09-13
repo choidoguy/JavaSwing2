@@ -12,6 +12,7 @@ public class Scheduler extends JFrame {
     
     public Scheduler() {
     	setTitle("frame change");
+    	
     	step01 = new STEP01(this, "", "step02");
     	step02 = new STEP02(this, "step01", "");
  

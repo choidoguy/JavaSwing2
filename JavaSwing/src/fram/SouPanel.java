@@ -23,29 +23,35 @@ public class SouPanel extends JPanel {
 		setBorder(new TitledBorder(new LineBorder(Color.black),""));
 		borderLayout.addLayoutComponent(label, BorderLayout.CENTER);
 		
+		JButton btnPrev = new JButton("PREV");
 		if(sPrev != null && !"".equals(sPrev)) {
-			JButton btnPrev = new JButton("PREV");
 			btnPrev.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					scheduler.change(sPrev);
 				}
 			});
-			this.add(btnPrev);
-			borderLayout.addLayoutComponent(btnPrev, BorderLayout.WEST);
+		} else {
+			btnPrev.setEnabled(false);
+			//btnPrev.setVisible(false);
 		}
+		this.add(btnPrev);
+		borderLayout.addLayoutComponent(btnPrev, BorderLayout.WEST);
 		
+		JButton btnNext = new JButton("NEXT");
 		if(sNext != null && !"".equals(sNext)) {
-			JButton btnNext = new JButton("NEXT");
 			btnNext.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					scheduler.change(sNext);
 				}
 			});
-			this.add(btnNext);
-			borderLayout.addLayoutComponent(btnNext, BorderLayout.EAST);
+		} else {
+			btnNext.setEnabled(false);
+			//btnNext.setVisible(false);
 		}
+		this.add(btnNext);
+		borderLayout.addLayoutComponent(btnNext, BorderLayout.EAST);
 		
 		setLayout(borderLayout);
 	}

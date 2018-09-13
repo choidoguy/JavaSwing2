@@ -15,27 +15,28 @@ import main.Scheduler;
 public class STEP01 extends JPanel {
     
     public STEP01(Scheduler scheduler, String sPrev, String sNext) {
+    	BorderLayout borderLayout = new BorderLayout();
+    	setLayout(borderLayout);
     	
     	NorPanel norPanel = new NorPanel("STEP01","다중파일선택");
-    	WesPanel wesPanel = new WesPanel();
-    	CenPanel cenPanel = new CenPanel();
-    	EasPanel easPanel = new EasPanel();
-    	SouPanel souPanel = new SouPanel(scheduler, sPrev, sNext);
+    	add(norPanel);
+    	borderLayout.addLayoutComponent(norPanel, BorderLayout.NORTH);
     	
-		add(norPanel);  
-		add(wesPanel);   
-		add(cenPanel); 
-		add(easPanel);   
-		add(souPanel);  
-		
-		BorderLayout borderLayout = new BorderLayout();
-		borderLayout.addLayoutComponent(norPanel, BorderLayout.NORTH);
-		borderLayout.addLayoutComponent(wesPanel, BorderLayout.WEST);
-		borderLayout.addLayoutComponent(cenPanel, BorderLayout.CENTER);
-		borderLayout.addLayoutComponent(easPanel, BorderLayout.EAST);
-		borderLayout.addLayoutComponent(souPanel, BorderLayout.SOUTH);
-		
-		setLayout(borderLayout);
+//    	WesPanel wesPanel = new WesPanel();
+//    	add(wesPanel);   
+//    	borderLayout.addLayoutComponent(wesPanel, BorderLayout.WEST);
+//    	
+//    	EasPanel easPanel = new EasPanel();
+//    	add(easPanel);   
+//    	borderLayout.addLayoutComponent(easPanel, BorderLayout.EAST);
+    	
+    	SouPanel souPanel = new SouPanel(scheduler, sPrev, sNext);
+    	add(souPanel);  
+    	borderLayout.addLayoutComponent(souPanel, BorderLayout.SOUTH);
+    	
+    	CenPanel cenPanel = new CenPanel();
+    	add(cenPanel); 
+    	borderLayout.addLayoutComponent(cenPanel, BorderLayout.CENTER);
 		
     } // end public STEP01(Scheduler scheduler)
     
