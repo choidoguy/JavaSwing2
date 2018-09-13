@@ -4,11 +4,11 @@ import java.awt.BorderLayout;
 
 import javax.swing.JPanel;
 
-import fram.CenPanel;
-import fram.EasPanel;
-import fram.NorPanel;
-import fram.SouPanel;
-import fram.WesPanel;
+import come.CenPanel;
+import come.EasPanel;
+import come.NorPanel;
+import come.SouPanel;
+import come.WesPanel;
 import main.Scheduler;
 
 @SuppressWarnings("serial")

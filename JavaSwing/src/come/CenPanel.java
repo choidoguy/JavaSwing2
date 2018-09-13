@@ -1,4 +1,4 @@
-package fram;
+package come;
 
 import java.awt.Color;
 
@@ -7,9 +7,9 @@ import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
-public class EasPanel extends JPanel {
-	public EasPanel() {
-		JLabel label = new JLabel("EasPanel");
+public class CenPanel extends JPanel {
+	public CenPanel() {
+		JLabel label = new JLabel("CenPanel");
 		this.add(label);
 		setBorder(new TitledBorder(new LineBorder(Color.black),""));
 	}
