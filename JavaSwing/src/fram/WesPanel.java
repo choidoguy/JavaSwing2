@@ -7,9 +7,9 @@ import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
-public class ComPanel extends JPanel {
-	public ComPanel() {
-		JLabel label = new JLabel("ComPanel");
+public class WesPanel extends JPanel {
+	public WesPanel() {
+		JLabel label = new JLabel("WesPanel");
 		this.add(label);
 		setBorder(new TitledBorder(new LineBorder(Color.black),""));
 	}

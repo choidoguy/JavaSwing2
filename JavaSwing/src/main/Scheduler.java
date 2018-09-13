@@ -1,46 +1,68 @@
 package main;
 import javax.swing.JFrame;
 
-import step.JPanel01;
-import step.JPanel02;
+import step.STEP01;
+import step.STEP02;
 
 @SuppressWarnings("serial")
 public class Scheduler extends JFrame {
  
-    public JPanel01 jpanel01 = null;
-    public JPanel02 jpanel02 = null;
+    public STEP01 step01 = null;
+    public STEP02 step02 = null;
     
     public Scheduler() {
     	setTitle("frame test");
-        jpanel01 = new JPanel01(this);
-        jpanel02 = new JPanel02(this);
+    	step01 = new STEP01(this);
+    	step02 = new STEP02(this);
  
-        add(jpanel01);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setSize(300, 300);
+        add(step01);
+        
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(600, 400);
         setVisible(true);
-    }
+    } // end public Scheduler()
  
-    public void change(String panelName) { // 패널 1번과 2번 변경 후 재설정
+    public void change(String panelName) {
     	
     	getContentPane().removeAll();
     	
     	switch(panelName) {
     	case "panel01":
-    		getContentPane().add(jpanel01);
+    		//getContentPane().add(jpanel01);
     	break;
     	case "panel02":
-    		getContentPane().add(jpanel02);
+    		//getContentPane().add(jpanel02);
     	break;
     	default : break;
     	}
     	
         revalidate();
         repaint();
-    }
+    } // end public void change(String panelName)
     
     public static void main(String[] args) {
-    	new Scheduler();
-    }
+    	Scheduler win = new Scheduler();
+        
+    	win.setLocationRelativeTo(null);
+//        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+//        GraphicsDevice [] gd = ge.getScreenDevices();
+//        
+//        if(gd.length > 0) {
+//            int width  = gd[0].getDefaultConfiguration().getBounds().width;
+//            int height = gd[0].getDefaultConfiguration().getBounds().height;
+//            
+//            win.setSize(width / 2, height / 2);
+//            
+//            win.setLocation(
+//                ((width  / 2) - (win.getSize().width  / 2)) + gd[0].getDefaultConfiguration().getBounds().x,
+//                ((height / 2) - (win.getSize().height / 2)) + gd[0].getDefaultConfiguration().getBounds().y);
+//            win.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+//            win.setVisible(true);
+//        }
+//        else {
+//            GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().setFullScreenWindow(win);
+//        }
+        
+    } // end public static void main(String[] args)
  
 }

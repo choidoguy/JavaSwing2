@@ -12,12 +12,12 @@ import javax.swing.JTextField;
 import main.Scheduler;
 
 @SuppressWarnings("serial")
-public class JPanel02 extends JPanel { // 2번째 패널
+public class STEP02 extends JPanel { // 2번째 패널
     private JTextField textField;
     private JPasswordField passwordField;
     private Scheduler win;
  
-    public JPanel02(Scheduler win) {
+    public STEP02(Scheduler win) {
         setLayout(null);
         this.win = win;
         JLabel lblLbl = new JLabel("아이디:");
