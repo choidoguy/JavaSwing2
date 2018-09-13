@@ -1,51 +1,40 @@
 package step;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.BorderLayout;
 
-import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
 
+import fram.CenPanel;
+import fram.EasPanel;
+import fram.NorPanel;
+import fram.SouPanel;
+import fram.WesPanel;
 import main.Scheduler;
 
 @SuppressWarnings("serial")
-public class STEP02 extends JPanel { // 2번째 패널
-    private JTextField textField;
-    private JPasswordField passwordField;
-    private Scheduler win;
+public class STEP02 extends JPanel {
  
-    public STEP02(Scheduler win) {
-        setLayout(null);
-        this.win = win;
-        JLabel lblLbl = new JLabel("아이디:");
-        lblLbl.setBounds(31, 40, 67, 15);
-        add(lblLbl);
- 
-        textField = new JTextField();
-        textField.setBounds(123, 40, 116, 21);
-        add(textField);
-        textField.setColumns(10);
- 
-        JLabel lblLbl_1 = new JLabel("암호:");
-        lblLbl_1.setBounds(31, 84, 67, 15);
-        add(lblLbl_1);
- 
-        passwordField = new JPasswordField();
-        passwordField.setBounds(123, 84, 116, 21);
-        add(passwordField);
- 
-        JButton btn = new JButton("버튼");
-        btn.setSize(70, 20);
-        btn.setLocation(10, 10);
-        add(btn);
-        btn.addActionListener(new ActionListener() {
-        	@Override
-            public void actionPerformed(ActionEvent e) {
-                win.change("panel01");
-            }
-        });
-    } // end public JPanel02(Scheduler win)
-}
+    public STEP02(Scheduler scheduler, String sPrev, String sNext) {
+    	NorPanel norPanel = new NorPanel("STEP02","SPSS");
+    	WesPanel wesPanel = new WesPanel();
+    	CenPanel cenPanel = new CenPanel();
+    	EasPanel easPanel = new EasPanel();
+    	SouPanel souPanel = new SouPanel(scheduler, sPrev, sNext);
+    	
+		add(norPanel);  
+		add(wesPanel);   
+		add(cenPanel); 
+		add(easPanel);   
+		add(souPanel);  
+		
+		BorderLayout borderLayout = new BorderLayout();
+		borderLayout.addLayoutComponent(norPanel, BorderLayout.NORTH);
+		borderLayout.addLayoutComponent(wesPanel, BorderLayout.WEST);
+		borderLayout.addLayoutComponent(cenPanel, BorderLayout.CENTER);
+		borderLayout.addLayoutComponent(easPanel, BorderLayout.EAST);
+		borderLayout.addLayoutComponent(souPanel, BorderLayout.SOUTH);
+		
+		setLayout(borderLayout);
+    } // end public STEP02(Scheduler win)
+    
+} //end public class STEP02 extends JPanel

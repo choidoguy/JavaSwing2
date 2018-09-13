@@ -14,13 +14,13 @@ import main.Scheduler;
 @SuppressWarnings("serial")
 public class STEP01 extends JPanel {
     
-    public STEP01(Scheduler scheduler) {
+    public STEP01(Scheduler scheduler, String sPrev, String sNext) {
     	
     	NorPanel norPanel = new NorPanel("STEP01","다중파일선택");
     	WesPanel wesPanel = new WesPanel();
     	CenPanel cenPanel = new CenPanel();
     	EasPanel easPanel = new EasPanel();
-    	SouPanel souPanel = new SouPanel();
+    	SouPanel souPanel = new SouPanel(scheduler, sPrev, sNext);
     	
 		add(norPanel);  
 		add(wesPanel);   

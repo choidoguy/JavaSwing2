@@ -11,9 +11,9 @@ public class Scheduler extends JFrame {
     public STEP02 step02 = null;
     
     public Scheduler() {
-    	setTitle("frame test");
-    	step01 = new STEP01(this);
-    	step02 = new STEP02(this);
+    	setTitle("frame change");
+    	step01 = new STEP01(this, "", "step02");
+    	step02 = new STEP02(this, "step01", "");
  
         add(step01);
         
@@ -27,13 +27,11 @@ public class Scheduler extends JFrame {
     	getContentPane().removeAll();
     	
     	switch(panelName) {
-    	case "panel01":
-    		//getContentPane().add(jpanel01);
-    	break;
-    	case "panel02":
-    		//getContentPane().add(jpanel02);
-    	break;
-    	default : break;
+    	case "step01": getContentPane().add(step01); break;
+    	case "step02": getContentPane().add(step02); break;
+    	default : 
+    		getContentPane().add(step01);
+    		break;
     	}
     	
         revalidate();
