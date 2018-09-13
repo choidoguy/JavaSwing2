@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
@@ -61,15 +62,14 @@ public class STEP01 extends JPanel {
     	
     	
     	JPanel cenPanel = new JPanel();
+    	
     	cenPanel.setBorder(new TitledBorder(new LineBorder(Color.black),""));
-    	FileTable fileTable = new FileTable();
-    	JTable table = fileTable.getTable();
-		cenPanel.add(table);
-		new FileDrop(System.out, table, /* dragBorder, */ new FileDrop.Listener() {
+    	JScrollPane scroll = new JScrollPane((new FileTable()).getTable());
+    	cenPanel.add(scroll);
+		new FileDrop(System.out, scroll, /* dragBorder, */ new FileDrop.Listener() {
 			public void filesDropped(java.io.File[] files) {
 				
 				Object[][] obj = new Object[files.length][2];
-				
 				for (int i = 0; i < files.length; i++) {
 					try {
 						obj[i][0] = files[i].getCanonicalPath();
@@ -79,10 +79,8 @@ public class STEP01 extends JPanel {
 					}
 				} // end for: through each dropped file
 				
-				FileTable fileTable = new FileTable(obj);
-				JTable table = fileTable.getTable();
 				cenPanel.removeAll();
-				cenPanel.add(table);
+		    	cenPanel.add(new JScrollPane((new FileTable(obj)).getTable()));
 				
 				cenPanel.revalidate();
 				cenPanel.repaint();
@@ -91,7 +89,7 @@ public class STEP01 extends JPanel {
 		}); // end FileDrop.Listener
 		
 		BorderLayout layout = new BorderLayout();
-		layout.addLayoutComponent(table, BorderLayout.CENTER);
+		layout.addLayoutComponent(scroll, BorderLayout.CENTER);
 		cenPanel.setLayout(layout);
 		
 		

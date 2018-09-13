@@ -15,31 +15,31 @@ import javax.swing.table.TableCellRenderer;
 
 public class FileTable {
 	
+	private DefaultTableModel dm = new DefaultTableModel();
 	private JTable table;
 	
 	public FileTable() {
-		DefaultTableModel dm = new DefaultTableModel();
-		dm.setDataVector(null, new Object[] { "file path", "Button" });
-
-		table = new JTable(dm);
-		
-		table.getColumn("Button").setCellRenderer(new ButtonRenderer());
-		table.getColumn("Button").setCellEditor(new ButtonEditor(new JCheckBox()));
+		dm.setDataVector(null, new Object[] { "File Path", "Del" });
+		initTable();
 	} // end public FileTable()
 
 	public FileTable(Object[][] arg0) {
-		DefaultTableModel dm = new DefaultTableModel();
-		dm.setDataVector(arg0, new Object[] { "file path", "Button" });
-
-		table = new JTable(dm);
-		
-		table.getColumn("Button").setCellRenderer(new ButtonRenderer());
-		table.getColumn("Button").setCellEditor(new ButtonEditor(new JCheckBox()));
+		dm.setDataVector(arg0, new Object[] { "File Path", "Del" });
+		initTable();
 	} // end public FileTable()
 	
-	public JTable getTable() {
-		return table;
+	private void initTable() {
+		table = new JTable(dm);
+		table.getColumn("Del").setCellRenderer(new ButtonRenderer());
+		table.getColumn("Del").setCellEditor(new ButtonEditor(new JCheckBox()));
+		
+		table.getColumn("File Path").setPreferredWidth(630);
+		//table.getColumn("Del").setPreferredWidth(10);
 	}
+	
+	public DefaultTableModel getDefaultTableModel() { return dm; }
+	
+	public JTable getTable() { return table; }
 } // end public class FileTable extends JTable
 
 /**
@@ -67,10 +67,14 @@ class ButtonRenderer extends JButton implements TableCellRenderer {
 
 class ButtonEditor extends DefaultCellEditor {
 	protected JButton button;
-
 	private String label;
-
 	private boolean isPushed;
+	
+	private JTable table;
+	private Object value;
+	private boolean isSelected;
+	private int row;
+	private int column;
 
 	public ButtonEditor(JCheckBox checkBox) {
 		super(checkBox);
@@ -94,6 +98,14 @@ class ButtonEditor extends DefaultCellEditor {
 		label = (value == null) ? "" : value.toString();
 		button.setText(label);
 		isPushed = true;
+		
+		
+		this.table = table;
+		this.value = value;
+		this.isSelected = isSelected;
+		this.row = row;
+		this.column = column;
+		
 		return button;
 	}
 
@@ -101,8 +113,11 @@ class ButtonEditor extends DefaultCellEditor {
 		if (isPushed) {
 			//
 			//
-			JOptionPane.showMessageDialog(button, label + ": Ouch!");
+			//JOptionPane.showMessageDialog(button, label + ": Ouch!");
 			// System.out.println(label + ": Ouch!");
+			
+			System.out.println("row : "+ this.row);
+			((DefaultTableModel) this.table.getModel()).removeRow(this.row);
 		}
 		isPushed = false;
 		return new String(label);
