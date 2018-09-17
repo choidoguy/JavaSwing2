@@ -1,134 +1,118 @@
 package file;
 
 import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.util.Vector;
 
-import javax.swing.DefaultCellEditor;
+import javax.swing.AbstractCellEditor;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JOptionPane;
 import javax.swing.JTable;
-import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
+
+import step.STEP01;
 
 public class FileTable {
 	
 	private DefaultTableModel dm = new DefaultTableModel();
+	private STEP01 step01;
 	private JTable table;
 	
+	private Object[] objColNms = new Object[] { "File Path", "Del"  };
+	
 	public FileTable() {
-		dm.setDataVector(null, new Object[] { "File Path", "Del" });
+		dm.setDataVector(null, objColNms);
 		initTable();
 	} // end public FileTable()
 
-	public FileTable(Object[][] arg0) {
-		dm.setDataVector(arg0, new Object[] { "File Path", "Del" });
+	public FileTable(STEP01 step01, Object[][] arg0) {
+		this.step01 = step01;
+		dm.setDataVector(arg0, objColNms);
 		initTable();
 	} // end public FileTable()
 	
 	private void initTable() {
 		table = new JTable(dm);
-		table.getColumn("Del").setCellRenderer(new ButtonRenderer());
-		table.getColumn("Del").setCellEditor(new ButtonEditor(new JCheckBox()));
 		
 		table.getColumn("File Path").setPreferredWidth(630);
-		//table.getColumn("Del").setPreferredWidth(10);
-	}
+		
+		table.getColumn("Del").setCellRenderer(new TableCell());
+		table.getColumn("Del").setCellEditor(new TableCell());
+	} // end private void initTable()
 	
 	public DefaultTableModel getDefaultTableModel() { return dm; }
 	
 	public JTable getTable() { return table; }
+	
+	@SuppressWarnings("rawtypes")
+	public void JTableRemoveRow() {
+		int row = table.getSelectedRow();
+		if (row == -1)
+			return;
+
+		DefaultTableModel model = (DefaultTableModel) table.getModel();
+		model.removeRow(row);
+
+		int rowCnt = table.getRowCount();
+
+		if (rowCnt > 0) {
+			Vector vector = model.getDataVector();
+			Object[][] objData = new Object[vector.size()][((Vector) vector.get(0)).size()];
+			for (int i = 0; i < vector.size(); i++) {
+				Vector vec = (Vector) vector.get(i);
+				for (int j = 0; j < vec.size(); j++) {
+					objData[i][j] = vec.get(j);
+				}
+			}
+
+			DefaultTableModel clonModel = new DefaultTableModel(objData, objColNms);
+			JTable clonTable = new JTable(clonModel);
+			clonTable.getColumn("Del").setCellRenderer(new TableCell());
+			clonTable.getColumn("Del").setCellEditor(new TableCell());
+			
+			table = clonTable;
+			table.getColumn("File Path").setPreferredWidth(630);
+			
+			step01.repaint(table);
+		} else {
+			DefaultTableModel clonModel = new DefaultTableModel(null, objColNms);
+			JTable clonTable = new JTable(clonModel);
+			
+			table = clonTable;
+			table.getColumn("File Path").setPreferredWidth(630);
+			
+			step01.repaint(table);
+		}
+	} // end public void JTableRemoveRow()
+	
+	class TableCell extends AbstractCellEditor implements TableCellEditor, TableCellRenderer {
+		JButton jb;
+
+		public TableCell() {
+			jb = new JButton("Del");
+			jb.addActionListener(e -> {
+				JTableRemoveRow();
+			});
+		}
+
+		@Override
+		public Object getCellEditorValue() {
+			return null;
+		}
+
+		@Override
+		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
+				int row, int column) {
+			return jb;
+		}
+
+		@Override
+		public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row,
+				int column) {
+			return jb;
+		}
+	} // end class TableCell extends AbstractCellEditor implements TableCellEditor, TableCellRenderer
+	
 } // end public class FileTable extends JTable
 
-/**
- * @version 1.0 11/09/98
- */
-
-class ButtonRenderer extends JButton implements TableCellRenderer {
-	public ButtonRenderer() {
-		setOpaque(true);
-	}
-
-	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
-			int row, int column) {
-		if (isSelected) {
-			setForeground(table.getSelectionForeground());
-			setBackground(table.getSelectionBackground());
-		} else {
-			setForeground(table.getForeground());
-			setBackground(UIManager.getColor("Button.background"));
-		}
-		setText((value == null) ? "" : value.toString());
-		return this;
-	}
-} // end class ButtonRenderer extends JButton implements TableCellRenderer
-
-class ButtonEditor extends DefaultCellEditor {
-	protected JButton button;
-	private String label;
-	private boolean isPushed;
-	
-	private JTable table;
-	private Object value;
-	private boolean isSelected;
-	private int row;
-	private int column;
-
-	public ButtonEditor(JCheckBox checkBox) {
-		super(checkBox);
-		button = new JButton();
-		button.setOpaque(true);
-		button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				fireEditingStopped();
-			}
-		});
-	}
-
-	public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-		if (isSelected) {
-			button.setForeground(table.getSelectionForeground());
-			button.setBackground(table.getSelectionBackground());
-		} else {
-			button.setForeground(table.getForeground());
-			button.setBackground(table.getBackground());
-		}
-		label = (value == null) ? "" : value.toString();
-		button.setText(label);
-		isPushed = true;
-		
-		
-		this.table = table;
-		this.value = value;
-		this.isSelected = isSelected;
-		this.row = row;
-		this.column = column;
-		
-		return button;
-	}
-
-	public Object getCellEditorValue() {
-		if (isPushed) {
-			//
-			//
-			//JOptionPane.showMessageDialog(button, label + ": Ouch!");
-			// System.out.println(label + ": Ouch!");
-			
-			System.out.println("row : "+ this.row);
-			((DefaultTableModel) this.table.getModel()).removeRow(this.row);
-		}
-		isPushed = false;
-		return new String(label);
-	}
-
-	public boolean stopCellEditing() {
-		isPushed = false;
-		return super.stopCellEditing();
-	}
-
-	protected void fireEditingStopped() {
-		super.fireEditingStopped();
-	}
-} // end class ButtonEditor extends DefaultCellEditor
