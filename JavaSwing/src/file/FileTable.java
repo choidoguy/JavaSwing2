@@ -14,7 +14,13 @@ import step.STEP01;
 @SuppressWarnings("rawtypes")
 public class FileTable {
 	
-	private DefaultTableModel dm = new DefaultTableModel();
+	@SuppressWarnings("serial")
+	private DefaultTableModel dm = new DefaultTableModel() {
+		public boolean isCellEditable(int r, int c) {
+			if(c != 1 )return false; // edit 수정 불가 읽기 전용
+			else return true;
+		}
+	};
 	private STEP01 step01;
 	private JTable table;
 	

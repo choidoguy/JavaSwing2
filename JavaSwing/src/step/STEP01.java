@@ -2,8 +2,12 @@ package step;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.io.File;
+import java.io.IOException;
 
+import javax.swing.BorderFactory;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -82,14 +86,19 @@ public class STEP01<Ojbect> extends JPanel {
 	} // end public void repaint(JTable table)
 
 	// centerPanel을 초기화 한다
+	@SuppressWarnings("static-access")
 	private void centerPanelInit() {
 		JScrollPane scroll = new JScrollPane(table);
-
 		cenPanel.setBorder(new TitledBorder(new LineBorder(Color.black), ""));
 		cenPanel.add(scroll);
+		
+		JLabel lMessage = new JLabel("첨부하실 파일을 추가해 주세요!");
+		lMessage.setHorizontalAlignment(lMessage.CENTER);
+		cenPanel.add(lMessage);
 
 		BorderLayout layout = new BorderLayout();
 		layout.addLayoutComponent(scroll, BorderLayout.CENTER);
+		layout.addLayoutComponent(lMessage, BorderLayout.SOUTH);
 		cenPanel.setLayout(layout);
 
 		new FileDrop(System.out, scroll, /* dragBorder, */ new FileDrop.Listener() {
@@ -179,6 +188,26 @@ public class STEP01<Ojbect> extends JPanel {
 					JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
+		
+		String allExt = "";
+		for(int i=0 ; i<fileList.length ; i++) {
+			String path = "";
+			String ext = "";
+			try {
+				path = fileList[i].getCanonicalPath();
+				ext = path.substring(path.lastIndexOf(".") + 1);
+				if("".equals(allExt)) allExt = ext;
+				else if(!ext.equals(allExt)) {
+					JOptionPane.showMessageDialog(null, "확장자가 다른 파일이 포함되어있습니다\r\n"+path, "Message",
+							JOptionPane.ERROR_MESSAGE);
+					return false;
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+		}
+		
 		return true;
 	}
 	

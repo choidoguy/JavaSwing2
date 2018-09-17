@@ -15,10 +15,12 @@ import main.Scheduler;
 
 @SuppressWarnings("serial")
 public class SouPanel extends JPanel {
+	@SuppressWarnings("static-access")
 	public SouPanel(Scheduler scheduler, String sPrev, String sCurr, String sNext) {
 		BorderLayout borderLayout = new BorderLayout();
 		
 		JLabel label = new JLabel("SouPanel");
+		label.setHorizontalAlignment(label.CENTER);
 		this.add(label);
 		setBorder(new TitledBorder(new LineBorder(Color.black),""));
 		borderLayout.addLayoutComponent(label, BorderLayout.CENTER);

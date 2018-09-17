@@ -5,10 +5,8 @@ import java.awt.BorderLayout;
 import javax.swing.JPanel;
 
 import come.CenPanel;
-import come.EasPanel;
 import come.NorPanel;
 import come.SouPanel;
-import come.WesPanel;
 import main.Scheduler;
 
 @SuppressWarnings("serial")

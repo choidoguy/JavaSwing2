@@ -7,10 +7,12 @@ import step.STEP02;
 @SuppressWarnings("serial")
 public class Scheduler extends JFrame {
  
-    public STEP01 step01 = null;
+    @SuppressWarnings("rawtypes")
+	public STEP01 step01 = null;
     public STEP02 step02 = null;
     
-    public Scheduler() {
+    @SuppressWarnings("rawtypes")
+	public Scheduler() {
     	setTitle("frame change");
     	
     	step01 = new STEP01(this, "", "step02");
@@ -23,11 +25,15 @@ public class Scheduler extends JFrame {
         setVisible(true);
     } // end public Scheduler()
  
-    public void callScheduler(String currPanelName, String nextPanelName) {
+    public void callScheduler(String currPanelNm, String nextPanelNm) {
     	
     	boolean validationCheck = true;
-    	switch(currPanelName) {
-    	case "step01": validationCheck = step01.validationMoveNextStep(); break;
+    	switch(currPanelNm) {
+    	case "step01": 
+    		if(step01.validationMoveNextStep()) {
+    			change(nextPanelNm);
+    		}
+    		return;
     	case "step02": validationCheck = step02.validationMoveNextStep(); break;
     	default : 
     		validationCheck = false;
@@ -35,15 +41,15 @@ public class Scheduler extends JFrame {
     	}
     	
     	if(validationCheck) {
-    		change(nextPanelName);
+    		change(nextPanelNm);
     	}
     } // end public void change(
     
-    public void change(String nextPanelName) {
+    public void change(String nextPanelNm) {
     	
     	getContentPane().removeAll();
     	
-    	switch(nextPanelName) {
+    	switch(nextPanelNm) {
     	case "step01": getContentPane().add(step01); break;
     	case "step02": getContentPane().add(step02); break;
     	default : 
