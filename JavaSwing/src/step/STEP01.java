@@ -18,24 +18,43 @@ import file.FileTable;
 import main.Scheduler;
 
 @SuppressWarnings("serial")
-public class STEP01 extends JPanel {
+public class STEP01<Ojbect> extends JPanel {
 	private NorPanel norPanel;
 	private SouPanel souPanel;
-	
+
 	private JPanel cenPanel;
 	private JTable table;
-	
+
 	private File[] fileList;
 	
-	public File[] getFileList() {
-		return fileList;
-	}
+	public STEP01(Scheduler scheduler, String sPrev, String sNext) {
+		// NORTH
+		norPanel = new NorPanel("STEP01", "다중파일선택");
+		this.add(norPanel);
 
-	public void setFileList(File[] addFiles) {
-		if(fileList == null || fileList.length == 0) {
-			fileList = addFiles;
-			
-			Object[][] obj = new Object[fileList.length][2];
+		// SOUTH
+		souPanel = new SouPanel(scheduler, sPrev, "step01",  sNext);
+		this.add(souPanel);
+
+		// CENTER
+		cenPanel = new JPanel();
+		this.table = (new FileTable(this, null)).getTable();
+		centerPanelInit();
+		this.add(cenPanel);
+
+		BorderLayout borderLayout = new BorderLayout();
+		borderLayout.addLayoutComponent(norPanel, BorderLayout.NORTH);
+		borderLayout.addLayoutComponent(souPanel, BorderLayout.SOUTH);
+		borderLayout.addLayoutComponent(cenPanel, BorderLayout.CENTER);
+		setLayout(borderLayout);
+
+	} // end public STEP01(
+
+	// fileList[] 를 JTable 에 인자로 넣을 Object[][] 형태로 반환한다
+	private Object[][] fileList2objs() {
+		Object[][] obj = null;
+		if (fileList != null && fileList.length != 0) {
+			obj = new Object[fileList.length][2];
 			for (int i = 0; i < fileList.length; i++) {
 				try {
 					obj[i][0] = fileList[i].getCanonicalPath();
@@ -44,20 +63,60 @@ public class STEP01 extends JPanel {
 				catch (java.io.IOException e) {
 				}
 			} // end for: through each dropped file
-			
-			repaint((new FileTable(this, obj)).getTable());
+		} else {
+			System.out.println("fileList2objs : fileList == null or fileList.length == 0 : return null");
 		}
-		else {
+		return obj;
+	}
+
+	// centerPanel을 reload 한다
+	private void centerPanelReload(JTable table) {
+		this.table = table;
+
+		cenPanel.removeAll();
+
+		centerPanelInit();
+
+		cenPanel.revalidate();
+		cenPanel.repaint();
+	} // end public void repaint(JTable table)
+
+	// centerPanel을 초기화 한다
+	private void centerPanelInit() {
+		JScrollPane scroll = new JScrollPane(table);
+
+		cenPanel.setBorder(new TitledBorder(new LineBorder(Color.black), ""));
+		cenPanel.add(scroll);
+
+		BorderLayout layout = new BorderLayout();
+		layout.addLayoutComponent(scroll, BorderLayout.CENTER);
+		cenPanel.setLayout(layout);
+
+		new FileDrop(System.out, scroll, /* dragBorder, */ new FileDrop.Listener() {
+			public void filesDropped(java.io.File[] files) {
+				setFileList(files);
+			} // end filesDropped
+		}); // end FileDrop.Listener
+
+	} // end private void initSTEP01(JScrollPane scroll)
+
+	// fileList 추가
+	public void setFileList(File[] addFiles) {
+		if (fileList == null || fileList.length == 0) {
+			fileList = addFiles;
+			Object[][] obj = fileList2objs();
+			centerPanelReload((new FileTable(this, obj)).getTable());
+		} else {
 			boolean findFile = false;
 			// 파일 중복 체크
-			for(int i=0 ; i < addFiles.length ; i++) {
+			for (int i = 0; i < addFiles.length; i++) {
 				try {
 					Object newObj = addFiles[i].getCanonicalPath();
-					for(int j=0 ; j < fileList.length ; j++) {
+					for (int j = 0; j < fileList.length; j++) {
 						Object oldObj = fileList[j].getCanonicalPath();
-						if(newObj.equals(oldObj)) {
-							String msg = newObj.toString() + "은\r\n이미 선택한 파일입니다";
-							JOptionPane.showMessageDialog(null, msg, "Message", JOptionPane.ERROR_MESSAGE);
+						if (newObj.equals(oldObj)) {
+							JOptionPane.showMessageDialog(null, newObj.toString() + "은\r\n이미 선택한 파일입니다", "Message",
+									JOptionPane.ERROR_MESSAGE);
 							findFile = true;
 							return;
 						}
@@ -66,44 +125,37 @@ public class STEP01 extends JPanel {
 					e.printStackTrace();
 				}
 			}
-			
-			if(findFile) return;
-			
-			// file List 갱신 
+
+			if (findFile)
+				return;
+
+			// file List 갱신
 			File[] cloneFiles = new File[fileList.length + addFiles.length];
-			for(int i=0 ; i < fileList.length ; i++) {
+			for (int i = 0; i < fileList.length; i++) {
 				cloneFiles[i] = fileList[i];
 			}
-			for(int i=fileList.length ; i < (fileList.length + addFiles.length) ; i++) {
-				cloneFiles[i] = addFiles[i-fileList.length];
+			for (int i = fileList.length; i < (fileList.length + addFiles.length); i++) {
+				cloneFiles[i] = addFiles[i - fileList.length];
 			}
-			
+
 			fileList = cloneFiles;
-			
+
 			// table 갱신
-			Object[][] obj = new Object[fileList.length][2];
-			for (int i = 0 ; i < fileList.length ; i++) {
-				try {
-					obj[i][0] = fileList[i].getCanonicalPath();
-					obj[i][1] = "Del";
-				} // end try
-				catch (java.io.IOException e) {
-				}
-			} // end for: add new file
-			
-			repaint((new FileTable(this, obj)).getTable());
+			Object[][] obj = fileList2objs();
+			centerPanelReload((new FileTable(this, obj)).getTable());
 		}
-		
 	} // end public void setFileList(File[] fileList)
-	
+
+	// FileTable.java 에서 삭제버튼을 누르게 되면
+	// 삭제 할 file의 전체 경로를 반환 받아 삭제 처리 후 화면을 갱신한다
 	public void removeFilePath(String selectFilePath) {
-		File[] newfiles = new File[fileList.length -1];
+		File[] newfiles = new File[fileList.length - 1];
 		int cnt = 0;
-		for(int i=0 ; i < fileList.length ; i++) {
+		for (int i = 0; i < fileList.length; i++) {
 			try {
 				Object oldObj = fileList[i].getCanonicalPath();
-				if(selectFilePath.equals(oldObj)) {
-					System.out.println("remove file path find : " + selectFilePath);
+				if (selectFilePath.equals(oldObj)) {
+					System.out.println("removeFilePath : remove file path " + selectFilePath + " find");
 				} else {
 					newfiles[cnt++] = fileList[i];
 				}
@@ -111,81 +163,28 @@ public class STEP01 extends JPanel {
 				e.printStackTrace();
 			}
 		}
-		
-		this.fileList = newfiles;
-		
-		Object[][] obj = new Object[fileList.length][2];
-		for (int i = 0 ; i < fileList.length ; i++) {
-			try {
-				obj[i][0] = fileList[i].getCanonicalPath();
-				obj[i][1] = "Del";
-			} // end try
-			catch (java.io.IOException e) {
-			}
-		} // end for: add new file
-		
+
+		fileList = newfiles;
+
+		Object[][] obj = fileList2objs();
+
 		this.table = (new FileTable(this, obj)).getTable();
-		repaint(this.table);
-	}
+		centerPanelReload(this.table);
+	} // end public void removeFilePath(String selectFilePath)
 	
+	// 다음 step 으로 넘어가기 전 validation
 	public Boolean validationMoveNextStep() {
-		if(fileList == null || fileList.length == 0) {
+		if (fileList == null || fileList.length == 0) {
+			JOptionPane.showMessageDialog(null, "파일이 지정되지 않았습니다", "Message",
+					JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 		return true;
 	}
 	
-    public STEP01(Scheduler scheduler, String sPrev, String sNext) {
-    	
-    	//NORTH
-    	norPanel = new NorPanel("STEP01","다중파일선택");
-    	this.add(norPanel);
-    	
-    	//SOUTH
-    	souPanel = new SouPanel(scheduler, sPrev, sNext);
-    	this.add(souPanel);  
-    	
-    	//CENTER
-    	cenPanel = new JPanel();
-    	this.table = (new FileTable(this, null)).getTable();
-    	STEP01CenterPanelInit(this.table);
-		this.add(cenPanel); 
-    	
-    	BorderLayout borderLayout = new BorderLayout();
-    	borderLayout.addLayoutComponent(norPanel, BorderLayout.NORTH);
-    	borderLayout.addLayoutComponent(souPanel, BorderLayout.SOUTH);
-    	borderLayout.addLayoutComponent(cenPanel, BorderLayout.CENTER);
-    	setLayout(borderLayout);
-    	
-    } // end public STEP01(Scheduler scheduler)
-    
-    public void repaint(JTable table) {
-    	this.table = table;
-    	
-    	cenPanel.removeAll();
-    	
-    	STEP01CenterPanelInit(this.table);
-    	
-    	cenPanel.revalidate();
-    	cenPanel.repaint();
-    } // end public void repaint(JTable table)
-    
-    private void STEP01CenterPanelInit(JTable table) {
-    	JScrollPane scroll = new JScrollPane(table);
-    	
-    	cenPanel.setBorder(new TitledBorder(new LineBorder(Color.black),""));
-    	cenPanel.add(scroll);
-    	
-    	BorderLayout layout = new BorderLayout();
-		layout.addLayoutComponent(scroll, BorderLayout.CENTER);
-		cenPanel.setLayout(layout);
-    	
-		new FileDrop(System.out, scroll, /* dragBorder, */ new FileDrop.Listener() {
-			public void filesDropped(java.io.File[] files) {
-				setFileList(files);
-			} // end filesDropped
-		}); // end FileDrop.Listener
-		
-    } // end private void initSTEP01(JScrollPane scroll)
-    
+//	// fileList 를 반환한다
+//	public File[] getFileList() {
+//		return fileList;
+//	}
+
 } // end public class STEP01 extends JPanel

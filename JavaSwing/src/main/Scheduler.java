@@ -23,11 +23,27 @@ public class Scheduler extends JFrame {
         setVisible(true);
     } // end public Scheduler()
  
-    public void change(String panelName) {
+    public void callScheduler(String currPanelName, String nextPanelName) {
+    	
+    	boolean validationCheck = true;
+    	switch(currPanelName) {
+    	case "step01": validationCheck = step01.validationMoveNextStep(); break;
+    	case "step02": validationCheck = step02.validationMoveNextStep(); break;
+    	default : 
+    		validationCheck = false;
+    	break;
+    	}
+    	
+    	if(validationCheck) {
+    		change(nextPanelName);
+    	}
+    } // end public void change(
+    
+    public void change(String nextPanelName) {
     	
     	getContentPane().removeAll();
     	
-    	switch(panelName) {
+    	switch(nextPanelName) {
     	case "step01": getContentPane().add(step01); break;
     	case "step02": getContentPane().add(step02); break;
     	default : 
@@ -37,7 +53,7 @@ public class Scheduler extends JFrame {
     	
         revalidate();
         repaint();
-    } // end public void change(String panelName)
+    } // end public void change(
     
     public static void main(String[] args) {
     	Scheduler win = new Scheduler();

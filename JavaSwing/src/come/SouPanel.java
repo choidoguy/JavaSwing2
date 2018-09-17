@@ -15,7 +15,7 @@ import main.Scheduler;
 
 @SuppressWarnings("serial")
 public class SouPanel extends JPanel {
-	public SouPanel(Scheduler scheduler, String sPrev, String sNext) {
+	public SouPanel(Scheduler scheduler, String sPrev, String sCurr, String sNext) {
 		BorderLayout borderLayout = new BorderLayout();
 		
 		JLabel label = new JLabel("SouPanel");
@@ -28,7 +28,7 @@ public class SouPanel extends JPanel {
 			btnPrev.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					scheduler.change(sPrev);
+					scheduler.callScheduler(sCurr, sPrev);
 				}
 			});
 		} else {
@@ -43,7 +43,7 @@ public class SouPanel extends JPanel {
 			btnNext.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					scheduler.change(sNext);
+					scheduler.callScheduler(sCurr, sNext);
 				}
 			});
 		} else {

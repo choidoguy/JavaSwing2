@@ -29,7 +29,7 @@ public class STEP02 extends JPanel {
 //    	add(easPanel);   
 //    	borderLayout.addLayoutComponent(easPanel, BorderLayout.EAST);
     	
-    	SouPanel souPanel = new SouPanel(scheduler, sPrev, sNext);
+    	SouPanel souPanel = new SouPanel(scheduler, sPrev, "step02",  sNext);
     	add(souPanel);  
     	borderLayout.addLayoutComponent(souPanel, BorderLayout.SOUTH);
     	
@@ -38,6 +38,11 @@ public class STEP02 extends JPanel {
     	borderLayout.addLayoutComponent(cenPanel, BorderLayout.CENTER);
 		
 		setLayout(borderLayout);
-    } // end public STEP02(Scheduler win)
+    } // end public STEP02(
+    
+ // 	다음 step 으로 넘어가기 전 validation
+ 	public Boolean validationMoveNextStep() {
+ 		return true;
+ 	}
     
 } //end public class STEP02 extends JPanel
