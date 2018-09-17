@@ -489,8 +489,7 @@ public class FileDrop {
 
 	/** Outputs <tt>message</tt> to <tt>out</tt> if it's not null. */
 	private static void log(java.io.PrintStream out, String message) { // Log message if requested
-		if (out != null)
-			out.println(message);
+		//if (out != null) out.println(message);
 	} // end log
 
 	/**

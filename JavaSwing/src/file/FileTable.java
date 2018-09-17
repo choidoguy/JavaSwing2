@@ -1,11 +1,9 @@
 package file;
 
 import java.awt.Component;
-import java.util.Vector;
 
 import javax.swing.AbstractCellEditor;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
@@ -21,11 +19,6 @@ public class FileTable {
 	
 	private Object[] objColNms = new Object[] { "File Path", "Del"  };
 	
-	public FileTable() {
-		dm.setDataVector(null, objColNms);
-		initTable();
-	} // end public FileTable()
-
 	public FileTable(STEP01 step01, Object[][] arg0) {
 		this.step01 = step01;
 		dm.setDataVector(arg0, objColNms);
@@ -34,9 +27,7 @@ public class FileTable {
 	
 	private void initTable() {
 		table = new JTable(dm);
-		
 		table.getColumn("File Path").setPreferredWidth(630);
-		
 		table.getColumn("Del").setCellRenderer(new TableCell());
 		table.getColumn("Del").setCellEditor(new TableCell());
 	} // end private void initTable()
@@ -45,17 +36,22 @@ public class FileTable {
 	
 	public JTable getTable() { return table; }
 	
-	@SuppressWarnings("rawtypes")
 	public void JTableRemoveRow() {
 		int row = table.getSelectedRow();
-		if (row == -1)
-			return;
+		if (row == -1) return;
 
-		DefaultTableModel model = (DefaultTableModel) table.getModel();
+		//DefaultTableModel model = (DefaultTableModel) table.getModel();
+		step01.removeFilePath(table.getValueAt(row, 0).toString());
+		
+		return;
+		
+		/*
 		model.removeRow(row);
 
 		int rowCnt = table.getRowCount();
 
+		JTable clonTable;
+		
 		if (rowCnt > 0) {
 			Vector vector = model.getDataVector();
 			Object[][] objData = new Object[vector.size()][((Vector) vector.get(0)).size()];
@@ -67,23 +63,22 @@ public class FileTable {
 			}
 
 			DefaultTableModel clonModel = new DefaultTableModel(objData, objColNms);
-			JTable clonTable = new JTable(clonModel);
+			clonTable = new JTable(clonModel);
 			clonTable.getColumn("Del").setCellRenderer(new TableCell());
 			clonTable.getColumn("Del").setCellEditor(new TableCell());
 			
-			table = clonTable;
-			table.getColumn("File Path").setPreferredWidth(630);
 			
-			step01.repaint(table);
 		} else {
 			DefaultTableModel clonModel = new DefaultTableModel(null, objColNms);
-			JTable clonTable = new JTable(clonModel);
-			
-			table = clonTable;
-			table.getColumn("File Path").setPreferredWidth(630);
-			
-			step01.repaint(table);
+			clonTable = new JTable(clonModel);
 		}
+		
+		table = clonTable;
+		table.getColumn("File Path").setPreferredWidth(630);
+		
+		step01.repaint(table);
+		*/
+		
 	} // end public void JTableRemoveRow()
 	
 	class TableCell extends AbstractCellEditor implements TableCellEditor, TableCellRenderer {
@@ -91,9 +86,7 @@ public class FileTable {
 
 		public TableCell() {
 			jb = new JButton("Del");
-			jb.addActionListener(e -> {
-				JTableRemoveRow();
-			});
+			jb.addActionListener(e -> { JTableRemoveRow(); });
 		}
 
 		@Override
