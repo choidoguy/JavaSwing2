@@ -2,11 +2,9 @@ package step;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
 
-import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -92,7 +90,7 @@ public class STEP01<Ojbect> extends JPanel {
 		cenPanel.setBorder(new TitledBorder(new LineBorder(Color.black), ""));
 		cenPanel.add(scroll);
 		
-		JLabel lMessage = new JLabel("첨부하실 파일을 추가해 주세요!");
+		JLabel lMessage = new JLabel("작업하실 파일을 추가해 주세요!");
 		lMessage.setHorizontalAlignment(lMessage.CENTER);
 		cenPanel.add(lMessage);
 
@@ -189,31 +187,68 @@ public class STEP01<Ojbect> extends JPanel {
 			return false;
 		}
 		
-		String allExt = "";
+		String tCase = "";
 		for(int i=0 ; i<fileList.length ; i++) {
 			String path = "";
 			String ext = "";
+			String cCase = "";
 			try {
 				path = fileList[i].getCanonicalPath();
-				ext = path.substring(path.lastIndexOf(".") + 1);
-				if("".equals(allExt)) allExt = ext;
-				else if(!ext.equals(allExt)) {
-					JOptionPane.showMessageDialog(null, "확장자가 다른 파일이 포함되어있습니다\r\n"+path, "Message",
+				ext = path.substring(path.lastIndexOf(".") + 1).toUpperCase();
+				if("SAV".equals(ext)) {
+					cCase = "SPSS";
+				}
+				else if("XLS".equals(ext) || "XLSX".equals(ext)) {
+					cCase = "EXCEL";
+				}
+				else {
+					JOptionPane.showMessageDialog(null, "지원하지 않는 형식입니다\r\n"+path, "Message",
+							JOptionPane.ERROR_MESSAGE);
+					return false;
+				}
+				
+				if("".equals(tCase)) tCase = cCase;
+				else if(!tCase.equals(cCase)) {
+					JOptionPane.showMessageDialog(null, "형식이 다른 파일이 포함되어있습니다\r\n"+path, "Message",
 							JOptionPane.ERROR_MESSAGE);
 					return false;
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			
-		}
+		} // end for(
 		
 		return true;
 	}
 	
-//	// fileList 를 반환한다
-//	public File[] getFileList() {
-//		return fileList;
-//	}
+	// fileList 를 반환한다
+	public String getFileCase() {
+		String tCase = "";
+		for(int i=0 ; i<fileList.length ; i++) {
+			String path = "";
+			String ext = "";
+			String cCase = "";
+			try {
+				path = fileList[i].getCanonicalPath();
+				ext = path.substring(path.lastIndexOf(".") + 1).toUpperCase();
+				if("sav".equals(ext) || "SAV".equals(ext)) {
+					cCase = "SPSS";
+				}
+				else if("xls".equals(ext) || "xlsx".equals(ext)) {
+					cCase = "EXCEL";
+				}
+				
+				if("".equals(tCase)) tCase = cCase;
+				else if(!tCase.equals(cCase)) {
+					JOptionPane.showMessageDialog(null, "형식이 다른 파일이 포함되어있습니다\r\n"+path, "Message",
+							JOptionPane.ERROR_MESSAGE);
+					return null;
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} // end for(
+		return tCase;
+	}
 
 } // end public class STEP01 extends JPanel
