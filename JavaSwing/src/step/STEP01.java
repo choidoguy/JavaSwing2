@@ -16,11 +16,11 @@ import javax.swing.border.TitledBorder;
 import come.NorPanel;
 import come.SouPanel;
 import file.FileDrop;
-import file.FileTable;
+import file.Step01FileTable;
 import main.Scheduler;
 
 @SuppressWarnings("serial")
-public class STEP01<Ojbect> extends JPanel {
+public class STEP01 extends JPanel {
 	private NorPanel norPanel;
 	private SouPanel souPanel;
 
@@ -40,7 +40,7 @@ public class STEP01<Ojbect> extends JPanel {
 
 		// CENTER
 		cenPanel = new JPanel();
-		this.table = (new FileTable(this, null)).getTable();
+		this.table = (new Step01FileTable(this, null)).getTable();
 		centerPanelInit();
 		this.add(cenPanel);
 
@@ -112,7 +112,7 @@ public class STEP01<Ojbect> extends JPanel {
 		if (fileList == null || fileList.length == 0) {
 			fileList = addFiles;
 			Object[][] obj = fileList2objs();
-			centerPanelReload((new FileTable(this, obj)).getTable());
+			centerPanelReload((new Step01FileTable(this, obj)).getTable());
 		} else {
 			boolean findFile = false;
 			// 파일 중복 체크
@@ -149,7 +149,7 @@ public class STEP01<Ojbect> extends JPanel {
 
 			// table 갱신
 			Object[][] obj = fileList2objs();
-			centerPanelReload((new FileTable(this, obj)).getTable());
+			centerPanelReload((new Step01FileTable(this, obj)).getTable());
 		}
 	} // end public void setFileList(File[] fileList)
 
@@ -175,7 +175,7 @@ public class STEP01<Ojbect> extends JPanel {
 
 		Object[][] obj = fileList2objs();
 
-		this.table = (new FileTable(this, obj)).getTable();
+		this.table = (new Step01FileTable(this, obj)).getTable();
 		centerPanelReload(this.table);
 	} // end public void removeFilePath(String selectFilePath)
 	
@@ -222,6 +222,10 @@ public class STEP01<Ojbect> extends JPanel {
 	}
 	
 	// fileList 를 반환한다
+	public File[] getFileList() {
+		return fileList;
+	}
+	
 	public String getFileCase() {
 		String tCase = "";
 		for(int i=0 ; i<fileList.length ; i++) {

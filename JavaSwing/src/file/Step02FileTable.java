@@ -9,10 +9,9 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 
-import step.STEP01;
+import step.STEP02;
 
-@SuppressWarnings("rawtypes")
-public class FileTable {
+public class Step02FileTable {
 	
 	@SuppressWarnings("serial")
 	private DefaultTableModel dm = new DefaultTableModel() {
@@ -21,13 +20,13 @@ public class FileTable {
 			else return true;
 		}
 	};
-	private STEP01 step01;
+	private STEP02 step02;
 	private JTable table;
 	
 	private Object[] objColNms = new Object[] { "File Path", "Del"  };
 	
-	public FileTable(STEP01 step01, Object[][] arg0) {
-		this.step01 = step01;
+	public Step02FileTable(STEP02 step02, Object[][] arg0) {
+		this.step02 = step02;
 		dm.setDataVector(arg0, objColNms);
 		initTable();
 	} // end public FileTable()
@@ -51,7 +50,7 @@ public class FileTable {
 			jb = new JButton("Del");
 			jb.addActionListener(e -> {
 				if (table.getSelectedRow() == -1) return;
-				step01.removeFilePath(table.getValueAt(table.getSelectedRow(), 0).toString());
+				step02.removeFilePath(table.getValueAt(table.getSelectedRow(), 0).toString());
 			});
 		}
 

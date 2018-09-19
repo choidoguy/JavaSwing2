@@ -1,13 +1,8 @@
 package main;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 
 import step.STEP01;
 import step.STEP02;
@@ -26,10 +21,10 @@ public class Scheduler extends JFrame {
     	setTitle("frame change");
     	
     	step01 = new STEP01(this, "", "step02");
-    	// spss 파일의 확장자(.sav, .SAV) 형식인 경우 
-    	step02 = new STEP02(this, "step01", "");
-    	// EXCEL 파일의 확장자(.xls, .xlsx) 형식인 경우 
-    	step03 = new STEP03(this, "step01", "");
+//    	// spss 파일의 확장자(.sav, .SAV) 형식인 경우 
+//    	step02 = new STEP02(this, "step01", "");
+//    	// EXCEL 파일의 확장자(.xls, .xlsx) 형식인 경우 
+//    	step03 = new STEP03(this, "step01", "");
  
         add(step01);
         
@@ -48,7 +43,11 @@ public class Scheduler extends JFrame {
     		if(step01.validationMoveNextStep()) {
     			String tCase = step01.getFileCase();
     			if("SPSS".equals(tCase)) {
-    				change("step02");
+    				getContentPane().removeAll();
+    				step02 = new STEP02(this, "step01", "", step01.getFileList());
+    				getContentPane().add(step02);
+    				revalidate();
+    		        repaint();
     			}
     			else {
     				change("step03");
