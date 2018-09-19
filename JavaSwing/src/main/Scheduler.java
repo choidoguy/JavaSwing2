@@ -25,8 +25,6 @@ public class Scheduler extends JFrame {
 	public Scheduler() {
     	setTitle("frame change");
     	
-    	createMenu();
-    	
     	step01 = new STEP01(this, "", "step02");
     	// spss 파일의 확장자(.sav, .SAV) 형식인 경우 
     	step02 = new STEP02(this, "step01", "");
@@ -40,36 +38,6 @@ public class Scheduler extends JFrame {
         setVisible(true);
     } // end public Scheduler()
     
-    void createMenu() {
-        JMenuBar mb = new JMenuBar(); // 메뉴바 생성
-        JMenuItem[] menuItem = new JMenuItem[4];
-        String[] itemTitle = { "Database Connection", "File Read", "Exit" };
-        JMenu MenuWorkType = new JMenu("작업유형");
- 
-        MenuActionListener listener = new MenuActionListener();
-        for (int i = 0; i < menuItem.length; i++) {
-            menuItem[i] = new JMenuItem(itemTitle[i]);
-            menuItem[i].addActionListener(listener);
-            MenuWorkType.add(menuItem[i]);
-        }
-        mb.add(MenuWorkType);
-        setJMenuBar(mb); // 메뉴바를 프레임에 부착
-    } // end void createMenu(
- 
-    class MenuActionListener implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-            String cmd = e.getActionCommand();
-            switch (cmd) { // 메뉴 아이템의 종류 구분
-            case "Database Connection":
-                break;
-            case "File Read":
-                break;
-            case "Exit":
-                System.exit(0);
-                break;
-            }
-        }
-    } // end class MenuActionListener implements ActionListener {
     
     // 현 step 에서 다음 stpe 으로 가기 위한 맞춤 검사
     public void callScheduler(String currPanelNm, String nextPanelNm) {
