@@ -15,10 +15,10 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableModel;
 
 import come.NorPanel;
 import come.SouPanel;
-import file.Step02Table;
 import main.Scheduler;
 
 @SuppressWarnings("serial")
@@ -49,7 +49,7 @@ public class STEP02 extends JPanel {
 		for(int i =0 ; i<objlist.length ; i++) {
 			objlist[i][1] = "";
 		}
-		this.table = (new Step02Table(this, objlist)).getTable();
+		this.table = (new Step02Table(objlist)).getTable();
 		centerPanelInit();
 		this.add(cenPanel);
 
@@ -163,3 +163,27 @@ public class STEP02 extends JPanel {
 	} // end public void create(
 
 } // end public class STEP01 extends JPanel
+
+class Step02Table {
+	
+	@SuppressWarnings("serial")
+	private DefaultTableModel dm = new DefaultTableModel() {
+		public boolean isCellEditable(int r, int c) {
+			if(c != 1 )return false; // edit 수정 불가 읽기 전용
+			else return true;
+		}
+	};
+	
+	private JTable table;
+	
+	private Object[] objColNms = new Object[] { "파일경로", "영역"  };
+	
+	public Step02Table(Object[][] arg0) {
+		dm.setDataVector(arg0, objColNms);
+		table = new JTable(dm);
+		table.getColumn("파일경로").setPreferredWidth(300);
+	} // end public FileTable()
+	
+	public JTable getTable() { return table; }
+	
+} // end public class Step02Table extends JTable
