@@ -1,6 +1,7 @@
 package step;
 
 import java.awt.BorderLayout;
+import java.io.File;
 
 import javax.swing.JPanel;
 
@@ -12,7 +13,7 @@ import main.Scheduler;
 @SuppressWarnings("serial")
 public class STEP03 extends JPanel {
  
-    public STEP03(Scheduler scheduler, String sPrev, String sNext) {
+    public STEP03(Scheduler scheduler, String sPrev, String sNext, File[] fileList) {
     	BorderLayout borderLayout = new BorderLayout();
     	
     	NorPanel norPanel = new NorPanel("STEP03","EXCEL");

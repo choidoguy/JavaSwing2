@@ -44,17 +44,27 @@ public class Scheduler extends JFrame {
     			String tCase = step01.getFileCase();
     			if("SPSS".equals(tCase)) {
     				getContentPane().removeAll();
-    				step02 = new STEP02(this, "step01", "", step01.getFileList());
+    				step02 = new STEP02(this, "step01", "Create", step01.getFileList());
     				getContentPane().add(step02);
     				revalidate();
     		        repaint();
     			}
     			else {
-    				change("step03");
+    				getContentPane().removeAll();
+    				step03 = new STEP03(this, "step01", "", step01.getFileList());
+    				getContentPane().add(step03);
+    				revalidate();
+    		        repaint();
     			}
     		} // end if(step01.validationMoveNextStep()) {
     		return;
-    	case "step02": validationCheck = step02.validationMoveNextStep(); break;
+    	case "step02": 
+    		//validationCheck = step02.validationMoveNextStep();
+    		if("Create".equals(nextPanelNm)) {
+    			step02.create();
+    			return;
+    		}
+    		break;
     	case "step03": validationCheck = step03.validationMoveNextStep(); break;
     	default : 
     		validationCheck = false;

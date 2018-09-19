@@ -19,13 +19,13 @@ public class SouPanel extends JPanel {
 	public SouPanel(Scheduler scheduler, String sPrev, String sCurr, String sNext) {
 		BorderLayout borderLayout = new BorderLayout();
 		
-		JLabel label = new JLabel("SouPanel");
+		JLabel label = new JLabel("");
 		label.setHorizontalAlignment(label.CENTER);
 		this.add(label);
 		setBorder(new TitledBorder(new LineBorder(Color.black),""));
 		borderLayout.addLayoutComponent(label, BorderLayout.CENTER);
 		
-		JButton btnPrev = new JButton("PREV");
+		JButton btnPrev = new JButton("이전");
 		if(sPrev != null && !"".equals(sPrev)) {
 			btnPrev.addActionListener(new ActionListener() {
 				@Override
@@ -40,15 +40,25 @@ public class SouPanel extends JPanel {
 		this.add(btnPrev);
 		borderLayout.addLayoutComponent(btnPrev, BorderLayout.WEST);
 		
-		JButton btnNext = new JButton("NEXT");
-		if(sNext != null && !"".equals(sNext)) {
+		JButton btnNext = new JButton("다음");
+		if(sNext != null && !"".equals(sNext) && !"Create".equals(sNext)) {
 			btnNext.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					scheduler.callScheduler(sCurr, sNext);
 				}
 			});
-		} else {
+		}
+		else if("Create".equals(sNext)) {
+			btnNext.setText("생성");
+			btnNext.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					scheduler.callScheduler(sCurr, sNext);
+				}
+			});
+		}
+		else {
 			btnNext.setEnabled(false);
 			//btnNext.setVisible(false);
 		}

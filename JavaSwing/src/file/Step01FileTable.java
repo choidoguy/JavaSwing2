@@ -23,7 +23,7 @@ public class Step01FileTable {
 	private STEP01 step01;
 	private JTable table;
 	
-	private Object[] objColNms = new Object[] { "File Path", "Del"  };
+	private Object[] objColNms = new Object[] { "파일경로", "삭제"  };
 	
 	public Step01FileTable(STEP01 step01, Object[][] arg0) {
 		this.step01 = step01;
@@ -33,9 +33,9 @@ public class Step01FileTable {
 	
 	private void initTable() {
 		table = new JTable(dm);
-		table.getColumn("File Path").setPreferredWidth(630);
-		table.getColumn("Del").setCellRenderer(new TableCell());
-		table.getColumn("Del").setCellEditor(new TableCell());
+		table.getColumn("파일경로").setPreferredWidth(630);
+		table.getColumn("삭제").setCellRenderer(new TableCell());
+		table.getColumn("삭제").setCellEditor(new TableCell());
 	} // end private void initTable()
 	
 	public DefaultTableModel getDefaultTableModel() { return dm; }
@@ -47,7 +47,7 @@ public class Step01FileTable {
 		JButton jb;
 
 		public TableCell() {
-			jb = new JButton("Del");
+			jb = new JButton("삭제");
 			jb.addActionListener(e -> {
 				if (table.getSelectedRow() == -1) return;
 				step01.removeFilePath(table.getValueAt(table.getSelectedRow(), 0).toString());
