@@ -31,7 +31,7 @@ public class STEP01 extends JPanel {
 	
 	public STEP01(Scheduler scheduler, String sPrev, String sNext) {
 		// NORTH
-		norPanel = new NorPanel("STEP01", "´ÙÁßÆÄÀÏ¼±ÅÃ");
+		norPanel = new NorPanel("STEP01", "ë‹¤ì¤‘íŒŒì¼ì„ íƒ");
 		this.add(norPanel);
 
 		// SOUTH
@@ -52,7 +52,7 @@ public class STEP01 extends JPanel {
 
 	} // end public STEP01(
 
-	// fileList[] ¸¦ JTable ¿¡ ÀÎÀÚ·Î ³ÖÀ» Object[][] ÇüÅÂ·Î ¹İÈ¯ÇÑ´Ù
+	// fileList[] ë¥¼ JTable ì— ì¸ìë¡œ ë„£ì„ Object[][] í˜•íƒœë¡œ ë°˜í™˜í•œë‹¤
 	private Object[][] fileList2objs() {
 		Object[][] obj = null;
 		if (fileList != null && fileList.length != 0) {
@@ -71,7 +71,7 @@ public class STEP01 extends JPanel {
 		return obj;
 	}
 
-	// centerPanelÀ» reload ÇÑ´Ù
+	// centerPanelì„ reload í•œë‹¤
 	private void centerPanelReload(JTable table) {
 		this.table = table;
 
@@ -83,14 +83,14 @@ public class STEP01 extends JPanel {
 		cenPanel.repaint();
 	} // end public void repaint(JTable table)
 
-	// centerPanelÀ» ÃÊ±âÈ­ ÇÑ´Ù
+	// centerPanelì„ ì´ˆê¸°í™” í•œë‹¤
 	@SuppressWarnings("static-access")
 	private void centerPanelInit() {
 		JScrollPane scroll = new JScrollPane(table);
 		cenPanel.setBorder(new TitledBorder(new LineBorder(Color.black), ""));
 		cenPanel.add(scroll);
 		
-		JLabel lMessage = new JLabel("ÀÛ¾÷ÇÏ½Ç ÆÄÀÏÀ» Ãß°¡ÇØ ÁÖ¼¼¿ä!");
+		JLabel lMessage = new JLabel("ì‘ì—…í•˜ì‹¤ íŒŒì¼ì„ ì¶”ê°€í•´ ì£¼ì„¸ìš”!");
 		lMessage.setHorizontalAlignment(lMessage.CENTER);
 		cenPanel.add(lMessage);
 
@@ -107,7 +107,7 @@ public class STEP01 extends JPanel {
 
 	} // end private void initSTEP01(JScrollPane scroll)
 
-	// fileList Ãß°¡
+	// fileList ì¶”ê°€
 	public void setFileList(File[] addFiles) {
 		if (fileList == null || fileList.length == 0) {
 			fileList = addFiles;
@@ -115,14 +115,14 @@ public class STEP01 extends JPanel {
 			centerPanelReload((new Step01FileTable(this, obj)).getTable());
 		} else {
 			boolean findFile = false;
-			// ÆÄÀÏ Áßº¹ Ã¼Å©
+			// íŒŒì¼ ì¤‘ë³µ ì²´í¬
 			for (int i = 0; i < addFiles.length; i++) {
 				try {
 					Object newObj = addFiles[i].getCanonicalPath();
 					for (int j = 0; j < fileList.length; j++) {
 						Object oldObj = fileList[j].getCanonicalPath();
 						if (newObj.equals(oldObj)) {
-							JOptionPane.showMessageDialog(null, newObj.toString() + "Àº\r\nÀÌ¹Ì ¼±ÅÃÇÑ ÆÄÀÏÀÔ´Ï´Ù", "Message",
+							JOptionPane.showMessageDialog(null, newObj.toString() + "ì€\r\nì´ë¯¸ ì„ íƒí•œ íŒŒì¼ì…ë‹ˆë‹¤", "Message",
 									JOptionPane.ERROR_MESSAGE);
 							findFile = true;
 							return;
@@ -136,7 +136,7 @@ public class STEP01 extends JPanel {
 			if (findFile)
 				return;
 
-			// file List °»½Å
+			// file List ê°±ì‹ 
 			File[] cloneFiles = new File[fileList.length + addFiles.length];
 			for (int i = 0; i < fileList.length; i++) {
 				cloneFiles[i] = fileList[i];
@@ -147,14 +147,14 @@ public class STEP01 extends JPanel {
 
 			fileList = cloneFiles;
 
-			// table °»½Å
+			// table ê°±ì‹ 
 			Object[][] obj = fileList2objs();
 			centerPanelReload((new Step01FileTable(this, obj)).getTable());
 		}
 	} // end public void setFileList(File[] fileList)
 
-	// FileTable.java ¿¡¼­ »èÁ¦¹öÆ°À» ´©¸£°Ô µÇ¸é
-	// »èÁ¦ ÇÒ fileÀÇ ÀüÃ¼ °æ·Î¸¦ ¹İÈ¯ ¹Ş¾Æ »èÁ¦ Ã³¸® ÈÄ È­¸éÀ» °»½ÅÇÑ´Ù
+	// FileTable.java ì—ì„œ ì‚­ì œë²„íŠ¼ì„ ëˆ„ë¥´ê²Œ ë˜ë©´
+	// ì‚­ì œ í•  fileì˜ ì „ì²´ ê²½ë¡œë¥¼ ë°˜í™˜ ë°›ì•„ ì‚­ì œ ì²˜ë¦¬ í›„ í™”ë©´ì„ ê°±ì‹ í•œë‹¤
 	public void removeFilePath(String selectFilePath) {
 		File[] newfiles = new File[fileList.length - 1];
 		int cnt = 0;
@@ -179,10 +179,10 @@ public class STEP01 extends JPanel {
 		centerPanelReload(this.table);
 	} // end public void removeFilePath(String selectFilePath)
 	
-	// ´ÙÀ½ step À¸·Î ³Ñ¾î°¡±â Àü validation
+	// ë‹¤ìŒ step ìœ¼ë¡œ ë„˜ì–´ê°€ê¸° ì „ validation
 	public Boolean validationMoveNextStep() {
 		if (fileList == null || fileList.length == 0) {
-			JOptionPane.showMessageDialog(null, "ÆÄÀÏÀÌ ÁöÁ¤µÇÁö ¾Ê¾Ò½À´Ï´Ù", "Message",
+			JOptionPane.showMessageDialog(null, "íŒŒì¼ì´ ì§€ì •ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤", "Message",
 					JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
@@ -202,14 +202,14 @@ public class STEP01 extends JPanel {
 					cCase = "EXCEL";
 				}
 				else {
-					JOptionPane.showMessageDialog(null, "Áö¿øÇÏÁö ¾Ê´Â Çü½ÄÀÔ´Ï´Ù\r\n"+path, "Message",
+					JOptionPane.showMessageDialog(null, "ì§€ì›í•˜ì§€ ì•ŠëŠ” í˜•ì‹ì…ë‹ˆë‹¤\r\n"+path, "Message",
 							JOptionPane.ERROR_MESSAGE);
 					return false;
 				}
 				
 				if("".equals(tCase)) tCase = cCase;
 				else if(!tCase.equals(cCase)) {
-					JOptionPane.showMessageDialog(null, "Çü½ÄÀÌ ´Ù¸¥ ÆÄÀÏÀÌ Æ÷ÇÔµÇ¾îÀÖ½À´Ï´Ù\r\n"+path, "Message",
+					JOptionPane.showMessageDialog(null, "í˜•ì‹ì´ ë‹¤ë¥¸ íŒŒì¼ì´ í¬í•¨ë˜ì–´ìˆìŠµë‹ˆë‹¤\r\n"+path, "Message",
 							JOptionPane.ERROR_MESSAGE);
 					return false;
 				}
@@ -221,7 +221,7 @@ public class STEP01 extends JPanel {
 		return true;
 	}
 	
-	// fileList ¸¦ ¹İÈ¯ÇÑ´Ù
+	// fileList ë¥¼ ë°˜í™˜í•œë‹¤
 	public File[] getFileList() {
 		return fileList;
 	}
@@ -244,7 +244,7 @@ public class STEP01 extends JPanel {
 				
 				if("".equals(tCase)) tCase = cCase;
 				else if(!tCase.equals(cCase)) {
-					JOptionPane.showMessageDialog(null, "Çü½ÄÀÌ ´Ù¸¥ ÆÄÀÏÀÌ Æ÷ÇÔµÇ¾îÀÖ½À´Ï´Ù\r\n"+path, "Message",
+					JOptionPane.showMessageDialog(null, "í˜•ì‹ì´ ë‹¤ë¥¸ íŒŒì¼ì´ í¬í•¨ë˜ì–´ìˆìŠµë‹ˆë‹¤\r\n"+path, "Message",
 							JOptionPane.ERROR_MESSAGE);
 					return null;
 				}

@@ -1,6 +1,8 @@
 package file;
 
 import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.AbstractCellEditor;
 import javax.swing.JButton;
@@ -16,14 +18,15 @@ public class Step01FileTable {
 	@SuppressWarnings("serial")
 	private DefaultTableModel dm = new DefaultTableModel() {
 		public boolean isCellEditable(int r, int c) {
-			if(c != 1 )return false; // edit ¼öÁ¤ ºÒ°¡ ÀĞ±â Àü¿ë
+			if(c != 1 )return false; // edit ìˆ˜ì • ë¶ˆê°€ ì½ê¸° ì „ìš©
 			else return true;
 		}
 	};
 	private STEP01 step01;
 	private JTable table;
 	
-	private Object[] objColNms = new Object[] { "ÆÄÀÏ°æ·Î", "»èÁ¦"  };
+	//"<html><center><b>" + efscidpi[i].getSheetNm() + "</b><br><font color=#88929f>" + efscidpi[i].getAreaNm() + "</font>";
+	private Object[] objColNms = new Object[] { "íŒŒì¼ê²½ë¡œ", "ì‚­ì œ"};
 	
 	public Step01FileTable(STEP01 step01, Object[][] arg0) {
 		this.step01 = step01;
@@ -33,9 +36,12 @@ public class Step01FileTable {
 	
 	private void initTable() {
 		table = new JTable(dm);
-		table.getColumn("ÆÄÀÏ°æ·Î").setPreferredWidth(630);
-		table.getColumn("»èÁ¦").setCellRenderer(new TableCell());
-		table.getColumn("»èÁ¦").setCellEditor(new TableCell());
+		table.getColumn("íŒŒì¼ê²½ë¡œ").setPreferredWidth(630);
+		table.getColumn("ì‚­ì œ").setCellRenderer(new TableCell());
+		table.getColumn("ì‚­ì œ").setCellEditor(new TableCell());
+		
+		table.getTableHeader().setReorderingAllowed(false); // ì´ë™ë¶ˆê°€
+//		table.getTableHeader().setResizingAllowed(false); // í¬ê¸° ì¡°ì ˆ ë¶ˆê°€
 	} // end private void initTable()
 	
 	public DefaultTableModel getDefaultTableModel() { return dm; }
@@ -47,10 +53,13 @@ public class Step01FileTable {
 		JButton jb;
 
 		public TableCell() {
-			jb = new JButton("»èÁ¦");
-			jb.addActionListener(e -> {
-				if (table.getSelectedRow() == -1) return;
-				step01.removeFilePath(table.getValueAt(table.getSelectedRow(), 0).toString());
+			jb = new JButton("ì‚­ì œ");
+			jb.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if (table.getSelectedRow() == -1) return;
+					step01.removeFilePath(table.getValueAt(table.getSelectedRow(), 0).toString());
+				}
 			});
 		}
 

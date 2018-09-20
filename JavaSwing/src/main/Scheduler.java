@@ -5,27 +5,22 @@ import java.awt.GraphicsEnvironment;
 import javax.swing.JFrame;
 
 import step.STEP01;
-import step.STEP02;
-import step.STEP03;
+import stepE.STEP03;
+import stepE.STEP04;
+import stepS.STEP02;
 
 @SuppressWarnings("serial")
 public class Scheduler extends JFrame {
  
-    @SuppressWarnings("rawtypes")
 	public STEP01 step01 = null;
     public STEP02 step02 = null;
     public STEP03 step03 = null;
+    public STEP04 step04 = null;
     
-    @SuppressWarnings("rawtypes")
 	public Scheduler() {
-    	setTitle("frame change");
+    	setTitle("ìë£Œë³€í™˜ë„êµ¬ v2");
     	
     	step01 = new STEP01(this, "", "step02");
-//    	// spss ÆÄÀÏÀÇ È®ÀåÀÚ(.sav, .SAV) Çü½ÄÀÎ °æ¿ì 
-//    	step02 = new STEP02(this, "step01", "");
-//    	// EXCEL ÆÄÀÏÀÇ È®ÀåÀÚ(.xls, .xlsx) Çü½ÄÀÎ °æ¿ì 
-//    	step03 = new STEP03(this, "step01", "");
- 
         add(step01);
         
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -34,7 +29,7 @@ public class Scheduler extends JFrame {
     } // end public Scheduler()
     
     
-    // Çö step ¿¡¼­ ´ÙÀ½ stpe À¸·Î °¡±â À§ÇÑ ¸ÂÃã °Ë»ç
+    // í˜„ step ì—ì„œ ë‹¤ìŒ stpe ìœ¼ë¡œ ê°€ê¸° ìœ„í•œ ë§ì¶¤ ê²€ì‚¬
     public void callScheduler(String currPanelNm, String nextPanelNm) {
     	
     	boolean validationCheck = true;
@@ -51,7 +46,7 @@ public class Scheduler extends JFrame {
     			}
     			else {
     				getContentPane().removeAll();
-    				step03 = new STEP03(this, "step01", "", step01.getFileList());
+    				step03 = new STEP03(this, "step01", "step04", step01.getFileList());
     				getContentPane().add(step03);
     				revalidate();
     		        repaint();
@@ -65,8 +60,14 @@ public class Scheduler extends JFrame {
     			return;
     		}
     		break;
-    	case "step03": validationCheck = step03.validationMoveNextStep(); break;
+    	case "step03": 
+    		validationCheck = step03.validationMoveNextStep(); 
+    		break;
+    	case "step04": 
+    		validationCheck = step04.validationMoveNextStep(); 
+    		break;
     	default : 
+    		System.out.println("callScheduler default case");
     		validationCheck = false;
     	break;
     	}
@@ -84,6 +85,10 @@ public class Scheduler extends JFrame {
     	case "step01": getContentPane().add(step01); break;
     	case "step02": getContentPane().add(step02); break;
     	case "step03": getContentPane().add(step03); break;
+    	case "step04": 
+    		step04 = new STEP04(this, "step03", "", step03.getFileList(), step03.getFileSheetAreaInfo());
+    		getContentPane().add(step04); 
+    		break;
     	default : 
     		getContentPane().add(step01);
     		break;
@@ -97,6 +102,7 @@ public class Scheduler extends JFrame {
     	Scheduler win = new Scheduler();
         
     	//win.setLocationRelativeTo(null);
+    	
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsDevice [] gd = ge.getScreenDevices();
         

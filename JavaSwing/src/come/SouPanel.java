@@ -16,7 +16,7 @@ import main.Scheduler;
 @SuppressWarnings("serial")
 public class SouPanel extends JPanel {
 	@SuppressWarnings("static-access")
-	public SouPanel(Scheduler scheduler, String sPrev, String sCurr, String sNext) {
+	public SouPanel(final Scheduler scheduler, final String sPrev, final String sCurr, final String sNext) {
 		BorderLayout borderLayout = new BorderLayout();
 		
 		JLabel label = new JLabel("");
@@ -25,7 +25,7 @@ public class SouPanel extends JPanel {
 		setBorder(new TitledBorder(new LineBorder(Color.black),""));
 		borderLayout.addLayoutComponent(label, BorderLayout.CENTER);
 		
-		JButton btnPrev = new JButton("¿Ã¿¸");
+		JButton btnPrev = new JButton("Ïù¥Ï†Ñ");
 		if(sPrev != null && !"".equals(sPrev)) {
 			btnPrev.addActionListener(new ActionListener() {
 				@Override
@@ -40,7 +40,7 @@ public class SouPanel extends JPanel {
 		this.add(btnPrev);
 		borderLayout.addLayoutComponent(btnPrev, BorderLayout.WEST);
 		
-		JButton btnNext = new JButton("¥Ÿ¿Ω");
+		JButton btnNext = new JButton("Îã§Ïùå");
 		if(sNext != null && !"".equals(sNext) && !"Create".equals(sNext)) {
 			btnNext.addActionListener(new ActionListener() {
 				@Override
@@ -50,7 +50,7 @@ public class SouPanel extends JPanel {
 			});
 		}
 		else if("Create".equals(sNext)) {
-			btnNext.setText("ª˝º∫");
+			btnNext.setText("ÏÉùÏÑ±");
 			btnNext.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {

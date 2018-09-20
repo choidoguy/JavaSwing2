@@ -14,7 +14,7 @@ public class NorPanel extends JPanel {
 	
 	public NorPanel(String sTitle, String sSubTitle) {
 		JLabel lTitle = new JLabel(sTitle);
-		lTitle.setBorder(BorderFactory.createEmptyBorder(0 , 10 , 0 , 10)); //»óÁÂÇÏ¿ì
+		lTitle.setBorder(BorderFactory.createEmptyBorder(0 , 10 , 0 , 10)); //ìƒì¢Œí•˜ìš°
 		add(lTitle);
 		
 		JLabel lSubTitle = new JLabel(sSubTitle);

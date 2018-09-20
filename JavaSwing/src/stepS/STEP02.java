@@ -1,7 +1,9 @@
-package step;
+package stepS;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
@@ -17,9 +19,10 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
+import main.Scheduler;
+
 import come.NorPanel;
 import come.SouPanel;
-import main.Scheduler;
 
 @SuppressWarnings("serial")
 public class STEP02 extends JPanel {
@@ -32,6 +35,8 @@ public class STEP02 extends JPanel {
 	private File[] fileList;
 	
 	JTextField oututPathTF;
+	
+	STEP02 step02;
 	
 	public STEP02(Scheduler scheduler, String sPrev, String sNext, File[] fileList) {
 		this.fileList = fileList;
@@ -58,10 +63,12 @@ public class STEP02 extends JPanel {
 		borderLayout.addLayoutComponent(souPanel, BorderLayout.SOUTH);
 		borderLayout.addLayoutComponent(cenPanel, BorderLayout.CENTER);
 		setLayout(borderLayout);
+		
+		step02 = this;
 
-	} // end public STEP01(
+	}
 
-	// fileList[] ∏¶ JTable ø° ¿Œ¿⁄∑Œ ≥÷¿ª Object[][] «¸≈¬∑Œ π›»Ø«—¥Ÿ
+	// fileList[] Î•º JTable Ïóê Ïù∏ÏûêÎ°ú ÎÑ£ÏùÑ Object[][] ÌòïÌÉúÎ°ú Î∞òÌôòÌïúÎã§
 	private Object[][] fileList2objs() {
 		Object[][] obj = null;
 		if (fileList != null && fileList.length != 0) {
@@ -80,7 +87,7 @@ public class STEP02 extends JPanel {
 		return obj;
 	}
 
-	// centerPanel¿ª √ ±‚»≠ «—¥Ÿ
+	// centerPanelÏùÑ Ï¥àÍ∏∞Ìôî ÌïúÎã§
 	private void centerPanelInit() {
 		JScrollPane scroll = new JScrollPane(table);
 		cenPanel.setBorder(new TitledBorder(new LineBorder(Color.black), ""));
@@ -88,19 +95,24 @@ public class STEP02 extends JPanel {
 		
 		
 			JPanel outPathPanel = new JPanel();
-			JLabel label = new JLabel("√‚∑¬∞Ê∑Œ : ");
+			JLabel label = new JLabel("Ï∂úÎ†•Í≤ΩÎ°ú : ");
 			outPathPanel.add(label);
 			oututPathTF = new JTextField();
 			oututPathTF.setEnabled(false);
 			outPathPanel.add(oututPathTF);
-			JButton btn = new JButton("º±≈√");
-			btn.addActionListener(e -> {
-				JFileChooser jfc = new JFileChooser();
-				jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-				jfc.showDialog(this, null);
-				File dir = jfc.getSelectedFile();
-				oututPathTF.setText(dir==null?"":dir.getPath());
+			JButton btn = new JButton("ÏÑ†ÌÉù");
+			btn.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					JFileChooser jfc = new JFileChooser();
+					jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+					jfc.showDialog(step02, null);
+					File dir = jfc.getSelectedFile();
+					oututPathTF.setText(dir==null?"":dir.getPath());
+				}
 			});
+			
+			
 			outPathPanel.add(btn);
 			
 			BorderLayout outPathLayout = new BorderLayout();
@@ -121,7 +133,7 @@ public class STEP02 extends JPanel {
 	} // end private void initSTEP01(JScrollPane scroll)
 
 	
-	// fileList ∏¶ π›»Ø«—¥Ÿ
+	// fileList Î•º Î∞òÌôòÌïúÎã§
 	public String getFileCase() {
 		String tCase = "";
 		for(int i=0 ; i<fileList.length ; i++) {
@@ -140,7 +152,7 @@ public class STEP02 extends JPanel {
 				
 				if("".equals(tCase)) tCase = cCase;
 				else if(!tCase.equals(cCase)) {
-					JOptionPane.showMessageDialog(null, "«¸Ωƒ¿Ã ¥Ÿ∏• ∆ƒ¿œ¿Ã ∆˜«‘µ«æÓ¿÷Ω¿¥œ¥Ÿ\r\n"+path, "Message",
+					JOptionPane.showMessageDialog(null, "ÌòïÏãùÏù¥ Îã§Î•∏ ÌååÏùºÏù¥ Ìè¨Ìï®ÎêòÏñ¥ÏûàÏäµÎãàÎã§\r\n"+path, "Message",
 							JOptionPane.ERROR_MESSAGE);
 					return null;
 				}
@@ -151,37 +163,40 @@ public class STEP02 extends JPanel {
 		return tCase;
 	}
 	
-	// ª˝º∫πˆ∆∞ ≈¨∏Ø
+	// ÏÉùÏÑ±Î≤ÑÌäº ÌÅ¥Î¶≠
 	public void create() {
 		String oututPath = oututPathTF.getText();
 		if(null == oututPath || "".equals(oututPath)) {
-			JOptionPane.showMessageDialog(null, "√‚∑¬∞Ê∑Œ∏¶ ¡ˆ¡§«ÿ ¡÷ººø‰", "Message",
+			JOptionPane.showMessageDialog(null, "Ï∂úÎ†•Í≤ΩÎ°úÎ•º ÏßÄÏ†ïÌï¥ Ï£ºÏÑ∏Ïöî", "Message",
 					JOptionPane.ERROR_MESSAGE);
 		} else {
-			System.out.println(oututPathTF.getText() + "∑Œ ª˝º∫");
+			System.out.println(oututPathTF.getText() + "Î°ú ÏÉùÏÑ±");
 		}
 	} // end public void create(
 
-} // end public class STEP01 extends JPanel
+} // end public class STEP02 extends JPanel
 
 class Step02Table {
 	
 	@SuppressWarnings("serial")
 	private DefaultTableModel dm = new DefaultTableModel() {
 		public boolean isCellEditable(int r, int c) {
-			if(c != 1 )return false; // edit ºˆ¡§ ∫“∞° ¿–±‚ ¿¸øÎ
+			if(c != 1 )return false; // edit ÏàòÏ†ï Î∂àÍ∞Ä ÏùΩÍ∏∞ Ï†ÑÏö©
 			else return true;
 		}
 	};
 	
 	private JTable table;
 	
-	private Object[] objColNms = new Object[] { "∆ƒ¿œ∞Ê∑Œ", "øµø™"  };
+	private Object[] objColNms = new Object[] { "ÌååÏùºÍ≤ΩÎ°ú", "ÏòÅÏó≠" };
 	
 	public Step02Table(Object[][] arg0) {
 		dm.setDataVector(arg0, objColNms);
 		table = new JTable(dm);
-		table.getColumn("∆ƒ¿œ∞Ê∑Œ").setPreferredWidth(300);
+		table.getColumn("ÌååÏùºÍ≤ΩÎ°ú").setPreferredWidth(300);
+		
+		table.getTableHeader().setReorderingAllowed(false); // Ïù¥ÎèôÎ∂àÍ∞Ä
+//		table.getTableHeader().setResizingAllowed(false); // ÌÅ¨Í∏∞ Ï°∞Ï†à Î∂àÍ∞Ä
 	} // end public FileTable()
 	
 	public JTable getTable() { return table; }

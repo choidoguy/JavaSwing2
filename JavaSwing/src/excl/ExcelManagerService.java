@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 
-public class MenuBarService {
+public class ExcelManagerService {
 	public static List<HashMap<String, String>> fileLoader(File file) {
 		ExcelManager manager = ExcelManager.getInstance();
 		List<HashMap<String, String>> list = null;

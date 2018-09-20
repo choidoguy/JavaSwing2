@@ -17,7 +17,9 @@ import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.CellReference;
 import org.apache.poi.openxml4j.opc.OPCPackage;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.xssf.eventusermodel.ReadOnlySharedStringsTable;
 import org.apache.poi.xssf.eventusermodel.XSSFReader;
@@ -135,16 +137,20 @@ public class ExcelManager {
 				if(currSheetNum == sheetNum) {
 					InputSource sheetSource = new InputSource(sheetStream);
 					
-					Sheet2ListHandler sheet2ListHandler = new Sheet2ListHandler(list);
+					MDSheetContentsHandler sheet2ListHandler = new MDSheetContentsHandler(list);
 					
-					ContentHandler handler = new XSSFSheetXMLHandler(styles, strings, sheet2ListHandler, false);
+					MDDataFormatter formatter = new MDDataFormatter(); // TODO 추가
+					//formatter.formatRawCellContents(value, formatIndex, formatString)
+					
+					ContentHandler handler = new XSSFSheetXMLHandler(styles, strings, sheet2ListHandler, formatter, false);
 					
 					SAXParserFactory saxFactory = SAXParserFactory.newInstance();
 					SAXParser saxParser = saxFactory.newSAXParser();
 					
 					XMLReader sheetParser = saxParser.getXMLReader();
-					sheetParser.setContentHandler(handler);
+					//XMLReader sheetParser = SAXHelper.newXMLReader();
 					
+					sheetParser.setContentHandler(handler);
 					sheetParser.parse(sheetSource);
 				}
 				sheetStream.close();
@@ -179,7 +185,7 @@ public class ExcelManager {
 			// 첫번째 시트를 읽음
 			HSSFSheet sheet = workbook.getSheetAt(0);
 			for (int i = 0; i <= sheet.getLastRowNum(); i++) {
-				list.add(readCellData(sheet.getRow(i)));
+				list.add(this.readCellData(sheet.getRow(i)));
 			}
 		}
 		/*--------------------------------------------------
@@ -207,7 +213,7 @@ public class ExcelManager {
 				InputSource sheetSource = new InputSource(sheetStream);
 				
 				//Sheet2ListHandler sheet2ListHandler = new Sheet2ListHandler(dataList, 27);
-				Sheet2ListHandler sheet2ListHandler = new Sheet2ListHandler(list);
+				MDSheetContentsHandler sheet2ListHandler = new MDSheetContentsHandler(list);
 				
 				ContentHandler handler = new XSSFSheetXMLHandler(styles, strings, sheet2ListHandler, false);
 				
@@ -232,11 +238,38 @@ public class ExcelManager {
 	 * xls
 	 ************************************************** */
 	private HashMap<String, String> readCellData(HSSFRow row) {
+		int rowNum = row.getRowNum();
 		HashMap<String, String> hMap = new HashMap<String, String>();
 		int maxNum = row.getLastCellNum();
+		
+//		System.out.println(rowNum);
+//		if(rowNum == 1) {
+//			System.out.println();
+//		}
+		
 		for (int i = 0; i < maxNum; i++) {
-			hMap.put("attr" + i, getStringCellData(row.getCell(i)));
+//			System.out.println("\t " + i);
+			CellReference ref      = new CellReference(rowNum, i);
+			String [] cellRefParts = ref.getCellRefParts();
+			String cellRefPart     = cellRefParts[2] + cellRefParts[1];
+			
+			HSSFCell cell = row.getCell(i);
+			//int cellType = cell.getCellType();
+//			if(cell.getCellType() == Cell.CELL_TYPE_BLANK) {
+//				System.out.println("CHECK : Cell.CELL_TYPE_BLANK");
+//			}
+//			else if(cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
+//				
+//			}
+//			
+//			else if(cell.getCellType() == Cell.CELL_TYPE_STRING) {
+//				hMap.put(cellRefPart , cell.getStringCellValue());
+//			}
+			hMap.put(cellRefPart , getStringCellData(cell));
+			
+			
 		}
+		
 		return hMap;
 	}
 	
